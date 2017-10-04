@@ -10,12 +10,67 @@
   <button data-people="Chevy Chase">Chevy Chase</button>
   <button data-people ="Steve Martin">Steve Martin</button>
   <button data-people="Martin Short">Martin Short</button>
-  <button data-people="Cats">Cats</button>
+  <button data-people="Three Amigos">Three Amigos</button>
+  <input id="search-box">
   <div id="gifs-appear-here">
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
  
+<script type="text/javascript">
 
+
+//button event listener jquery 
+//setting URL plus the API Key 
+$("button").on("click", function() {
+	var people = $(this).attr("data-people");
+	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+	people + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+//ajax call to the API
+	$.ajax({
+		url: queryURL,
+		method: "GET"
+	}).done(function(response) {
+
+//results var 
+var results = response.data;
+console.log("results", results);
+
+//loop through the button results
+for (var i = 0; i < results.length; i++) {
+
+var peopleDiv = $("<div>");
+
+var p = $("<p>");
+console.log(results);
+
+//showing the rating for the gif being displayed
+p.text("Rating: " + results[i].rating);
+console.log(p);
+
+
+var peopleImage = $("<img>");
+
+
+peopleImage.attr("src", results[i].images.fixed_height.url);
+
+//connecting the rating to the gif
+peopleDiv.append(p);
+
+//adding images to the specific div
+peopleDiv.append(peopleImage);
+console.log("peopleImage", peopleImage);
+
+//display the gifs in the designated container
+$("#gifs-appear-here").prepend(peopleDiv);
+
+}
+
+});
+});
+  </script>
+
+  
 
 
 </body>
